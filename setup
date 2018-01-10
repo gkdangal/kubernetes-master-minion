@@ -1,0 +1,167 @@
+Here i am going to implement kubernetes master and two minions
+
+files in both master and node
+/etc/kubernates
+1. update all hosts
+# yum update -y
+2. Stop and Disable all firewall
+# systemctl disable firewalld
+3. Disable selinux
+# vim /etc/sysconfig/selinux
+	## change this line
+	SELINUX=disable
+[root@gkdangal2 ~]# vim /etc/selinux/config 
+ SELINUX=disable
+4. remove the chrony and install ntp
+# yum remove chrony -y
+# yum install ntp -y
+#### Start and enable ntpd because every node master and minio must be syschronize with standard time
+# systemctl enable ntpd
+# systemctl start ntpd
+
+Manage your DNS--
+Update all hosts on
+# vim /etc/hosts
+gkdangal2.mylabserver.com	172.31.40.47
+gkdangal3.mylabserver.com	172.31.115.220
+gkdangal4.mylabserver.com	172.31.104.233
+-------------------------------------
+Creating repo on master and minion node.
+$ sudo vim /etc/yum.repos.d/virt7-docker-common-release.repo
+[virt7-docker-common-release]
+name=virt7-docker-common-release
+baseurl=http://cbs.centos.org/repos/virt7-docker-common-release/x86_64/os/
+gpgcheck=0
+------------------
+make selinux policy disabled
+$ sudo vim /etc/sysconfig/selinux
+	SELINUX=disabled
+$ sudo vim /etc/selinux
+	SELINUX=disabled
+$ sudo setenforce 0
+## run this command on all hosts.
+yum -y install --enablerepo=virt7-docker-common-release kubernetes etcd flannel
+
+############################################################33
+Now its time for configuration
+Edit /etc/kubernetes/config which will be the same on all hosts to contain
+$ sudo vim /etc/kubernetes/config
+
+###
+# kubernetes system config
+#
+# The following values are used to configure various aspects of all
+# kubernetes services, including
+#
+#   kube-apiserver.service
+#   kube-controller-manager.service
+#   kube-scheduler.service
+#   kubelet.service
+#   kube-proxy.service
+# logging to stderr means we get it in the systemd journal
+KUBE_LOGTOSTDERR="--logtostderr=true"
+
+# journal message level, 0 is debug
+KUBE_LOG_LEVEL="--v=0"
+
+# Should this cluster be allowed to run privileged docker containers
+KUBE_ALLOW_PRIV="--allow-privileged=false"
+
+# How the controller-manager, scheduler, and proxy find the apiserver
+KUBE_MASTER="--master=http://gkdangal2.mylabserver.com:8080"
+###############################
+on master configuration.
+
+$ sudo vim /etc/etcd/etcd.conf
+
+#[Member]
+#ETCD_CORS=""
+ETCD_DATA_DIR="/var/lib/etcd/default.etcd"
+
+#ETCD_LISTEN_PEER_URLS="http://localhost:2380"
+ETCD_LISTEN_CLIENT_URLS="http://0.0.0.0:2379"
+
+ETCD_NAME="default"
+
+#[Clustering]
+#ETCD_INITIAL_ADVERTISE_PEER_URLS="http://localhost:2380"
+ETCD_ADVERTISE_CLIENT_URLS="http://0.0.0.0:2379"
+
+##############################
+On master.....
+#sudo vim /etc/kubernetes/apiserver
+
+###
+# kubernetes system config
+#
+# The following values are used to configure the kube-apiserver
+#
+
+# The address on the local server to listen to.
+KUBE_API_ADDRESS="---address=0.0.0.0"
+
+# The port on the local server to listen on.
+ KUBE_API_PORT="--port=8080"
+
+# Port minions listen on
+ KUBELET_PORT="--kubelet-port=10250"
+# Comma separated list of nodes in the etcd cluster
+KUBE_ETCD_SERVERS="--etcd-servers=http://gkdangal2.mylabserver.com:2379"
+
+KUBE_SERVICE_ADDRESSES="--service-cluster-ip-range=10.254.0.0/16"
+
+KUBE_API_ARGS=""
+
+---------------------------------------------
+
+systemctl start etcd
+etcdctl mkdir /kube-centos/network
+etcdctl mk /kube-centos/network/config "{ \"Network\": \"172.30.0.0/16\", \"SubnetLen\": 24, \"Backend\": { \"Type\": \"vxlan\" } }"
+
+#########################
+Configure flannel to overlay Docker network in /etc/sysconfig/flanneld on the master (also in the nodes as we’ll see):
+$ sudo vim  /etc/sysconfig/flanneld
+
+# Flanneld configuration options  
+
+# etcd url location.  Point this to the server where etcd runs
+FLANNEL_ETCD_ENDPOINTS="http://gkdangal2.mylabserver.com:2379"
+
+# etcd config key.  This is the configuration key that flannel queries
+# For address range assignment
+FLANNEL_ETCD_PREFIX="/kube-centos/network"
+
+# Any additional options that you want to pass
+#FLANNEL_OPTIONS=""
+################
+$ sudo vim /etc/kubernetes/kubelet
+Configured the kubernetes service on Nodes
+###
+# kubernetes kubelet (minion) config
+
+# The address for the info server to serve on (set to 0.0.0.0 or "" for all interfaces)
+KUBELET_ADDRESS="--address=127.0.0.1"
+
+# The port for the info server to serve on
+ KUBELET_PORT="--port=10250"
+
+#adding some line
+##############
+# You may leave this blank to use the actual hostname
+ KUBELET_HOSTNAME="--hostname-override=gkdangal3.mylabserver.com"
+#
+# # location of the api-server
+ KUBELET_API_SERVER="--api-servers=http://gkdangal2.mylabserver.com:8080"
+###################
+
+# Add your own!
+KUBELET_ARGS=""
+
+##########################################
+for SERVICES in etcd kube-apiserver kube-controller-manager kube-scheduler flanneld; do
+    sudo systemctl restart $SERVICES
+    sudo systemctl enable $SERVICES
+    sudo systemctl status $SERVICES
+done
+
+
