@@ -27,51 +27,51 @@ baseurl=http://cbs.centos.org/repos/virt7-docker-common-release/x86_64/os/
 gpgcheck=0
 <!-- -->
 
-## Install these packeges on all nodes master and minions
+### Install these packeges on all nodes master and minions
 <!-- -->
 yum -y install --enablerepo=virt7-docker-common-release kubernetes docker
 <!-- -->
-## Packages for Master
-# logging to stderr means we get it in the systemd journal
+### Packages for Master
+### logging to stderr means we get it in the systemd journal
 KUBE_LOGTOSTDERR="--logtostderr=true"
 
-# journal message level, 0 is debug
+### journal message level, 0 is debug
 KUBE_LOG_LEVEL="--v=0"
 
-# Should this cluster be allowed to run privileged docker containers
+### Should this cluster be allowed to run privileged docker containers
 KUBE_ALLOW_PRIV="--allow-privileged=false"
 
-# How the controller-manager, scheduler, and proxy find the apiserver
+### How the controller-manager, scheduler, and proxy find the apiserver
 KUBE_MASTER="--master=http://gkdangal2:8080"
 
-#etcd server on master
+### etcd server on master
 [root@gkdangal2 ~]# vim /etc/etcd/etcd.conf
 KUBE_ETCD_SERVERS="--etcd-servers=http://gkdangal2:2379"
 <!-- -->
-#[Member]
-#ETCD_CORS=""
+###[Member]
+###ETCD_CORS=""
 ETCD_NAME="default"
 ETCD_DATA_DIR="/var/lib/etcd/default.etcd"
-#ETCD_WAL_DIR=""
-#ETCD_LISTEN_PEER_URLS="http://localhost:2380"
+###ETCD_WAL_DIR=""
+###ETCD_LISTEN_PEER_URLS="http://localhost:2380"
 ETCD_LISTEN_CLIENT_URLS="http://0.0.0.0:2379"
-#ETCD_MAX_SNAPSHOTS="5"
-#ETCD_MAX_WALS="5"
-#ETCD_NAME="default"
-#ETCD_SNAPSHOT_COUNT="100000"
-#ETCD_HEARTBEAT_INTERVAL="100"
-#ETCD_ELECTION_TIMEOUT="1000"
-#ETCD_QUOTA_BACKEND_BYTES="0"
+###ETCD_MAX_SNAPSHOTS="5"
+###ETCD_MAX_WALS="5"
+####ETCD_NAME="default"
+####ETCD_SNAPSHOT_COUNT="100000"
+####ETCD_HEARTBEAT_INTERVAL="100"
+####ETCD_ELECTION_TIMEOUT="1000"
+####ETCD_QUOTA_BACKEND_BYTES="0"
 #
-#[Clustering]
-#ETCD_INITIAL_ADVERTISE_PEER_URLS="http://localhost:2380"
+####[Clustering]
+####ETCD_INITIAL_ADVERTISE_PEER_URLS="http://localhost:2380"
 ETCD_ADVERTISE_CLIENT_URLS="http://0.0.0.0:2379"
 
 <!-- -->
 #Api server on Master
 [root@gkdangal2 ~]# vim /etc/kubernetes/apiserver
 ###
-# kubernetes system config
+#### kubernetes system config
 #
 # The following values are used to configure the kube-apiserver
 #
@@ -170,9 +170,11 @@ KUBELET_ARGS=""
 [root@gkdangal2 ~]# kubectl get nodes -o jsonpath='{ .items[*].status.addresses[?(@.type=="ExternalIP")].address}'
 ##to get how many nodes are ready
 [root@gkdangal2 ~]# kubectl get nodes -o jsonpath='{range .items[*]}{@.metadata.name}:{range @.status.conditions[*]}{@.type}={@.status};{end}{end}' | tr ';' "\n" | grep "Ready=True"
+<!-- -->
 Ready=True
 Ready=True
 Ready=True
+<!-- -->
 [root@gkdangal2 ~]# 
 ## with out grep 
 [root@gkdangal2 ~]# kubectl get nodes -o jsonpath='{range .items[*]}{@.metadata.name}:{range @.status.conditions[*]}{@.type}={@.status};{end}{end}' | tr ';' "\n" 
@@ -180,10 +182,12 @@ gkdangal3:OutOfDisk=False
 MemoryPressure=False
 DiskPressure=False
 Ready=True
+<!-- -->
 gkdangal4:OutOfDisk=False
 MemoryPressure=False
 DiskPressure=False
 Ready=True
+<!-- -->
 gkdangal5:OutOfDisk=False
 MemoryPressure=False
 DiskPressure=False
@@ -211,8 +215,8 @@ srw-rw---- 1 root root 0 Jan 10 21:06 /var/run/docker.sock
 [root@gkdangal5 ~]# ls -la /var/run/docker.sock
 srw-rw---- 1 root docker 0 Jan 10 21:06 /var/run/docker.sock
 exit from terminal and relogin then you can use docker command as a normal user.
-
 Afater doing this i can run docker command as a normal user.
+
 
 
 
