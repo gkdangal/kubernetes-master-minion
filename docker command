@@ -1,0 +1,36 @@
+docker attach elated_hawking bash
+   50  docker stop elated_hawking
+   51  docker restart elated_hawking
+   52  docker ps
+   53  docker exec -it 1d625ca1b28a /bin/bash
+   54  docker inspect 1d625ca1b28a 
+   55  docker inspect 1d625ca1b28a | grep IP
+   56  docker inspect 1d625ca1b28a | grep Gat
+   57  mkdir build1
+   58  cd build1/
+   59  mkdir RunAsUser
+   60  cd RunAsUser/
+   61  docker images
+   62  docker ps -a
+   63  docker stop 1d625ca1b28a
+   64  vim Dockerfile
+   65  docker build -t centos7/nonroot:v1
+   66  vim Dockerfile
+   67  docker build -it centos7/nonroot:v1
+   68  docker build -it centos7/nonroot:v1 .
+   69  docker images
+   70  docker run -it centos7/nonroot:v1 /bin/bash
+   71  docker ps
+   72  vim Dockerfile 
+   73  docker build -it centos7/nonroot:v1 .
+   74  docker run -it centos7/nonroot:v1 /bin/bash
+   75  docker images
+   76  docker rmi 0198dac45870 
+   77  docker ps -a
+   78  docker stop 86f6a4f0b923
+   79  docker ps -a
+   80  docker ps -a -q
+   81  docker rm 86f6a4f0b923
+   82  docker rm 598d3f162015
+   83  cat Dockerfile 
+   84  docker images

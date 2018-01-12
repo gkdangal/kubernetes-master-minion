@@ -1,0 +1,150 @@
+[root@gkdangal2 Build]# cat his2
+    1  rm .bash_history
+    2  rm /home/user/.bash_history 
+    3  reboot
+    4  passwd
+    5  passwd user
+    6  getenforece
+    7  getenforce 
+    8  vim /etc/selinux/semanage.conf 
+    9  yum remove chrony -y
+   10  yum install ntp -y
+   11  systemctl enable ntpd
+   12  systemctl start ntpd
+   13  vim /etc/sysconfig/selinux
+   14  reboot
+   15  vim /etc/sestatus.conf 
+   16  vim /etc/sysconfig/selinux 
+   17  vim /etc/selinux/config 
+   18  reboot
+   19  getenforce
+   20  vim /etc/selinux/config 
+   21  systemctl status ntpd
+   22  hostname
+   23  ping gkdangal2.mylabserver.com
+   24  vim /etc/hosts
+   25  ping gkdangal3.mylabserver.com 
+   26  hostname
+   27  hostname gkdangal2
+   28  ping gkdangal2
+   29  ping localhost
+   30  ping gkdangal3
+   31  cat /etc/hosts
+   32  vim /etc/yum.repos.d/virt7-docker-common-release.repo
+   33  yum update -y; yum repolist
+   34  systemctl status ntpd
+   35  vim /etc/hosts
+   36  cat /etc/hosts
+   37  vim /etc/hosts
+   38  ping gkdangal2
+   39  ping gkdangal3
+   40  ping gkdangal4
+   41  ping gkdangal5
+   42  cat /etc/hosts
+   43  yum -y install --enablerepo=virt7-docker-common-release kubernetes docker
+   44  yum -y install --enablerepo=virt7-docker-common-release kubernetes etcd
+   45  vim /etc/kubernetes/config 
+   46  vim /etc/etcd/etcd.conf 
+   47  vim /etc/kubernetes/apiserver 
+   48  systemctl enable etcd kube-apiserver kube-controller-managerkube-scheduler
+   49  systemctl enable etcd
+   50  systemctl enable kube-apiserver
+   51  systemctl enable kube-controller-manager
+   52  systemctl enable kube-scheduler
+   53  history
+   54  systemctl enable etcd kube-apiserver kube-controller-manager kube-scheduler
+   55  systemctl start etcd kube-apiserver kube-controller-manager kube-scheduler
+   56  systemctl status etcd kube-apiserver kube-controller-manager kube-scheduler | grep "(running)" | wc -l
+   57  vim /etc/kubernetes/config 
+   58  man kubectl
+   59  kubectl get nodes
+   60  man kubectl-get
+   61  kubectl get nodes
+   62  kubectl describe nodes
+   63  kubectl get nodes -o jsonpath='{ .items[*].status.addresses[?(@.type=="ExternalIP")].address}'
+   64  kubectl get nodes -o jsonpath='{range .items[*]}{@.metadata.name}:{range @.status.conditions[*]}{@.type}={@.status};{end}{end}' | tr ';' | grep "Ready=True"
+   65  kubectl get nodes -o jsonpath='{range .items[*]}{@.metadata.name}:{range @.status.conditions[*]}{@.type}={@.status};{end}{end}' | tr ';' "\n" | grep "Ready=True"
+   66  kubectl get nodes -o jsonpath='{range .items[*]}{@.metadata.name}:{range @.status.conditions[*]}{@.type}={@.status};{end}{end}' | tr ';' "\n" 
+   67  kubectl get nodes
+   68  kubectl get pods
+   69  kubectl get nodes
+   70  sestatus
+   71  docker version
+   72  exit
+   73  kubectl get nodes
+   74  ls -l
+   75  mkdir Build
+   76  cd Build/
+   77  kubectl get nodes
+   78  kubectl get pods
+   79  vim nginx.yaml
+   80  kubectl get pods
+   81  ls -l
+   82  history 
+   83  history > his001.txt
+   84  ls -l
+   85  kubectl create -f ./nginx.yaml 
+   86  kubectl get nodes
+   87  kubectl get pods
+   88  kubectl describe pod nginx
+   89  kubectl run busybox --mage=busybox --restart=Never -tty -i --generator=run-pod/v1
+   90  kubectl run busybox --mage=busybox --restairt=Never -tty -i --generator=run-pod/v1
+   91  kubectl run busybox --mage=busybox --restaimage=busybox --restart=Never -tty -i --generator=run-pod/v1
+   92  kubectl run busybox --image=busybox --restaimage=busybox --restart=Never -tty -i --generator=run-pod/v1
+   93  kubectl run busybox --image=busybox --restart=Never -tty -i --generator=run-pod/v1
+   94  kubectl describe pod nginx
+   95  kubectl run busybox --image=busybox --restart=Never --tty -i --generator=run-pod/v1
+   96  vim nginx.yaml
+	apiVersion: v1
+	kind: Pod
+	metadata:
+  	  name: nginx
+	spec:
+  	 containers:
+  	 - name: nginx
+    	 image: nginx:1.7.9
+         ports:
+        - containerPort: 80
+   97  kubectl delete pod busybox
+   98  kubectl delete pod nginx
+   99  kubectl create -f ./nginx.yaml 
+  100  kubectl describe pod nginx
+  101  kubectl run busybox --image=busybox --restart=Never --tty -i --generator=run-pod/v1
+  102  kubectl delete pod busybox 
+  103  kubectl delete pod nginx
+  104  vim nginx.yaml 
+  105  apiversion
+  106  apiVersion
+  107  kubectl api-version
+  108  kubectl api-versions
+  109  ls -l
+  110  cd Build/
+  111  ls -l
+  112  kubectl create -f nginx.yaml 
+  113  kubectl get pods
+  114  kubectl port-forward nginx :80 &
+  115  curl -i http://127.0.0.1:33240
+  116  wget -q0- http://127.0.0.1:33240
+  117  kubectl get pods
+  118  kubectl describe pods nginx
+  119  kubectl delete pods nginx
+  120  kubectl get pods
+  121  kubectl create -f ./nginx.yaml 
+  122  kubectl run busybox --image=busybox --restart=Never --tty -i --generator=run-pod/v1
+  123  kubectl delete pods busybox
+  124  kubectl run busybox --image=busybox --restart=Never --tty -i --generator=run-pod/v1
+  125  kubectl get nodes
+  126  kubectl get pods
+  127  kubectl describe pods nginx
+  128  ping 172.17.0.2
+  129  kubectl delete nodes nginx
+  130  kubectl get nodes
+  131  kubectl delete pods nginx
+  132  cd Build/
+  133  ls -l
+  134  kubectl create -f nginx.yaml 
+  135  kubectl descripe pod nginx
+  136  kubectl describe pod nginx
+  137  ping 172.17.0.2
+  138  history > his2
+

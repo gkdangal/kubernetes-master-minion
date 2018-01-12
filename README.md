@@ -216,6 +216,86 @@ srw-rw---- 1 root root 0 Jan 10 21:06 /var/run/docker.sock
 srw-rw---- 1 root docker 0 Jan 10 21:06 /var/run/docker.sock
 exit from terminal and relogin then you can use docker command as a normal user.
 Afater doing this i can run docker command as a normal user.
+<!-- -->
+[user@gkdangal5 ~]$ docker images
+<!-- -->
+REPOSITORY              TAG                 IMAGE ID            CREATED             SIZE
+<!-- -->
+docker.io/hello-world   latest              f2a91732366c        7 weeks ago         1.848 kB
+<!-- -->
+[user@gkdangal5 ~]$ 
+<!-- -->
+
+## How to create non-privilege user on docker imaages
+1. cerete a Docker files
+[user@gkdangal5 ~]$ vim DockerFile
+#### Dockerfile based on the latest centos 7 image - non-privileged user
+<!-- --> 
+FROM centos:latest
+<!-- -->
+MAINTAINER gkdangal@gmail.com
+<!-- -->
+RUN useradd -ms /bin/bash govinda
+<!-- -->
+USER govinda
+<!-- -->
+[user@gkdangal5 ~]$ docker build -t centos7/nonroot:v1 .
+$$ here . means i am going to create docker image at the same location of Dockerfile.
+<!-- -->
+[user@gkdangal3 ~]$ docker images
+<!-- -->
+[user@gkdangal3 ~]$ docker run -it -u 0 centos7/nonroot:v1
+[root@edc85ad65e15 /]# exit
+<!-- -->
+[user@gkdangal3 ~]$ docker run -it centos7/nonroot:v1
+[govinda@64df2041cdf5 /]$ exit
+<!-- -->
+[user@gkdangal3 ~]$ 
+<!-- -->
+### Create and Deploy Pods Defination using kubectl command
+<!-- -->
+ kubectl get nodes
+<!-- -->
+ kubectl get pods
+<!-- -->
+craete a folder first
+Create .yaml or .yml files
+Here i am going to create one nginx pod => Indentation is very important for yml command
+[root@gkdangal2 Build]# vim nginx.yaml 
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.7.9
+    ports:
+    - containerPort: 80
+-----------------------
+save and run this command
+[root@gkdangal2 Build]# kubectl delete pods nginx
+pod "nginx" deleted
+[root@gkdangal2 Build]#
+[root@gkdangal2 Build]# kubectl create -f nginx.yaml 
+pod "nginx" created
+you can create another pod this  way but you have to delete first one
+[root@gkdangal2 Build]# kubectl create -f ./nginx.yaml 
+pod "nginx" created
+[root@gkdangal2 Build]# 
+
+==Port forwarding of pod to outer world 
+
+[root@gkdangal2 Build]# kubectl port-forward nginx :80 &
+[1] 2137
+[root@gkdangal2 Build]# Forwarding from 127.0.0.1:36778 -> 80
+Forwarding from [::1]:36778 -> 80
+
+[root@gkdangal2 Build]# 
+-- here nginx pods is running on port 80 and external host port number to access it is 36778
+
+
 
 
 
