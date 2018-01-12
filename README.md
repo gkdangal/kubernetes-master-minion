@@ -292,8 +292,14 @@ pod "nginx" created
 [root@gkdangal2 Build]# Forwarding from 127.0.0.1:36778 -> 80
 Forwarding from [::1]:36778 -> 80
 
-[root@gkdangal2 Build]# 
+[root@gkdangal2 Build]#
+<!-- --> 
 -- here nginx pods is running on port 80 and external host port number to access it is 36778
+#### if you want test with in container using bysy box here is the command
+you can see history folder to check command
+[root@gkdangal2 Build]# kubectl run busybox --image=busybox --restart=Never --tty -i --generator=run-pod/v1
+###
+<!-- --> 
 
 
 
