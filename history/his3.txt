@@ -1,0 +1,351 @@
+[root@gkdangal2 ~]# cat his003 
+    1  rm .bash_history
+    2  rm /home/user/.bash_history 
+    3  reboot
+    4  passwd
+    5  passwd user
+    6  getenforece
+    7  getenforce 
+    8  vim /etc/selinux/semanage.conf 
+    9  yum remove chrony -y
+   10  yum install ntp -y
+   11  systemctl enable ntpd
+   12  systemctl start ntpd
+   13  vim /etc/sysconfig/selinux
+   14  reboot
+   15  vim /etc/sestatus.conf 
+   16  vim /etc/sysconfig/selinux 
+   17  vim /etc/selinux/config 
+   18  reboot
+   19  getenforce
+   20  vim /etc/selinux/config 
+   21  systemctl status ntpd
+   22  hostname
+   23  ping gkdangal2.mylabserver.com
+   24  vim /etc/hosts
+   25  ping gkdangal3.mylabserver.com 
+   26  hostname
+   27  hostname gkdangal2
+   28  ping gkdangal2
+   29  ping localhost
+   30  ping gkdangal3
+   31  cat /etc/hosts
+   32  vim /etc/yum.repos.d/virt7-docker-common-release.repo
+   33  yum update -y; yum repolist
+   34  systemctl status ntpd
+   35  vim /etc/hosts
+   36  cat /etc/hosts
+   37  vim /etc/hosts
+   38  ping gkdangal2
+   39  ping gkdangal3
+   40  ping gkdangal4
+   41  ping gkdangal5
+   42  cat /etc/hosts
+   43  yum -y install --enablerepo=virt7-docker-common-release kubernetes docker
+   44  yum -y install --enablerepo=virt7-docker-common-release kubernetes etcd
+   45  vim /etc/kubernetes/config 
+   46  vim /etc/etcd/etcd.conf 
+   47  vim /etc/kubernetes/apiserver 
+   48  systemctl enable etcd kube-apiserver kube-controller-managerkube-scheduler
+   49  systemctl enable etcd
+   50  systemctl enable kube-apiserver
+   51  systemctl enable kube-controller-manager
+   52  systemctl enable kube-scheduler
+   53  history
+   54  systemctl enable etcd kube-apiserver kube-controller-manager kube-scheduler
+   55  systemctl start etcd kube-apiserver kube-controller-manager kube-scheduler
+   56  systemctl status etcd kube-apiserver kube-controller-manager kube-scheduler | grep "(running)" | wc -l
+   57  vim /etc/kubernetes/config 
+   58  man kubectl
+   59  kubectl get nodes
+   60  man kubectl-get
+   61  kubectl get nodes
+   62  kubectl describe nodes
+   63  kubectl get nodes -o jsonpath='{ .items[*].status.addresses[?(@.type=="ExternalIP")].address}'
+   64  kubectl get nodes -o jsonpath='{range .items[*]}{@.metadata.name}:{range @.status.conditions[*]}{@.type}={@.status};{end}{end}' | tr ';' | grep "Ready=True"
+   65  kubectl get nodes -o jsonpath='{range .items[*]}{@.metadata.name}:{range @.status.conditions[*]}{@.type}={@.status};{end}{end}' | tr ';' "\n" | grep "Ready=True"
+   66  kubectl get nodes -o jsonpath='{range .items[*]}{@.metadata.name}:{range @.status.conditions[*]}{@.type}={@.status};{end}{end}' | tr ';' "\n" 
+   67  kubectl get nodes
+   68  kubectl get pods
+   69  kubectl get nodes
+   70  sestatus
+   71  docker version
+   72  exit
+   73  kubectl get nodes
+   74  ls -l
+   75  mkdir Build
+   76  cd Build/
+   77  kubectl get nodes
+   78  kubectl get pods
+   79  vim nginx.yaml
+   80  kubectl get pods
+   81  ls -l
+   82  history 
+   83  history > his001.txt
+   84  ls -l
+   85  kubectl create -f ./nginx.yaml 
+   86  kubectl get nodes
+   87  kubectl get pods
+   88  kubectl describe pod nginx
+   89  kubectl run busybox --mage=busybox --restart=Never -tty -i --generator=run-pod/v1
+   90  kubectl run busybox --mage=busybox --restairt=Never -tty -i --generator=run-pod/v1
+   91  kubectl run busybox --mage=busybox --restaimage=busybox --restart=Never -tty -i --generator=run-pod/v1
+   92  kubectl run busybox --image=busybox --restaimage=busybox --restart=Never -tty -i --generator=run-pod/v1
+   93  kubectl run busybox --image=busybox --restart=Never -tty -i --generator=run-pod/v1
+   94  kubectl describe pod nginx
+   95  kubectl run busybox --image=busybox --restart=Never --tty -i --generator=run-pod/v1
+   96  vim nginx.yaml 
+   97  kubectl delete pod busybox
+   98  kubectl delete pod nginx
+   99  kubectl create -f ./nginx.yaml 
+  100  kubectl describe pod nginx
+  101  kubectl run busybox --image=busybox --restart=Never --tty -i --generator=run-pod/v1
+  102  kubectl delete pod busybox 
+  103  kubectl delete pod nginx
+  104  vim nginx.yaml 
+  105  apiversion
+  106  apiVersion
+  107  kubectl api-version
+  108  kubectl api-versions
+  109  ls -l
+  110  cd Build/
+  111  ls -l
+  112  kubectl create -f nginx.yaml 
+  113  kubectl get pods
+  114  kubectl port-forward nginx :80 &
+  115  curl -i http://127.0.0.1:33240
+  116  wget -q0- http://127.0.0.1:33240
+  117  kubectl get pods
+  118  kubectl describe pods nginx
+  119  kubectl delete pods nginx
+  120  kubectl get pods
+  121  kubectl create -f ./nginx.yaml 
+  122  kubectl run busybox --image=busybox --restart=Never --tty -i --generator=run-pod/v1
+  123  kubectl delete pods busybox
+  124  kubectl run busybox --image=busybox --restart=Never --tty -i --generator=run-pod/v1
+  125  kubectl get nodes
+  126  kubectl get pods
+  127  kubectl describe pods nginx
+  128  ping 172.17.0.2
+  129  kubectl delete nodes nginx
+  130  kubectl get nodes
+  131  kubectl delete pods nginx
+  132  cd Build/
+  133  ls -l
+  134  kubectl create -f nginx.yaml 
+  135  kubectl descripe pod nginx
+  136  kubectl describe pod nginx
+  137  ping 172.17.0.2
+  138  history > his2
+  139  cat his2
+  140  kubectl port-forward --help
+  141  kubectl port-forward pods nginx :80
+  142  kubectl port-forward nginx :80
+  143  kubectl port-forward nginx :80 &
+  144  curl -i localhost:39877
+  145  kubectl get pods
+  146  kubectl delete pods busybox
+  147  ls -l
+  148  cd Build/
+  149  pwd
+  150  kubectl get nodes
+  151  kubectl get pods
+  152  cat his001.txt 
+  153  cat his2
+  154  cat nginx.yaml 
+  155  vim nginx.yaml 
+  156  kubectl get pods
+  157  kubectl delete nginx
+  158  kubectl delete pods nginx
+  159  kubectl create -f nginx.yaml 
+  160  kubectl delete pods nginx
+  161  kubectl create -f ./nginx.yaml 
+  162  kubectl delete pods nginx
+  163  kubectl create -f nginx.yaml 
+  164  kubectl port-forward nginx :80
+  165  kubectl port-forward nginx :80 &
+  166  wget -q0 - http://127.0.0.1:36778
+  167  wget -q0- http://127.0.0.1:36778
+  168  curl -i http://127.0.0.1:36778
+  169  curl ipinfo.io/ip
+  170  curl -i http://54.157.11.144:36778
+  171  cd Build/
+  172  cp nginx.yaml nginx-pod-label.yaml 
+  173  vim nginx-pod-label.yaml 
+  174  kubectl create -f nginx-pod-label.yaml 
+  175  kubectl delete pods nginx
+  176  kubectl create -f nginx-pod-label.yaml 
+  177  kubectl get pods -l app=nginx
+  178  cp nginx-pod-label.yaml nginx2-pod-label.yaml 
+  179  vim nginx2-pod-label.yaml 
+  180  kubectl create -f nginx2-pod-label.yaml 
+  181  kubectl get pods
+  182  kubectl get pods -l app=nginx2
+  183  vim nginx2-pod-label.yaml 
+  184  vim nginx-pod-label.yaml 
+  185  kubectl inspect -l app=nginx2
+  186  kubectl inspect pods -l app=nginx2
+  187  kubectl inspect pods nginx2
+  188  kubectl inspect nginx2
+  189  kubectl describe nginx2
+  190  history
+  191  kubecrl describe pod -l app=nginx2
+  192  kubectl describe pod -l app=nginx2
+  193  cp nginx-pod-label.yaml nginx-deployement-prod.yaml
+  194  vim nginx-deployement-prod.yaml 
+  195  kubectl describe service nginx
+  196  kubectl get pods
+  197  cd Build/
+  198  ls -l
+  199  vim nginx-deployement-prod.yaml 
+  200  kubectl create -f nginx-deployement-prod.yaml 
+  201  vim nginx-deployement-prod.yaml 
+  202  kubectl create -f nginx-deployement-prod.yaml 
+  203  yum install yamllint
+  204  yamllint --help
+  205  yamllint nginx-deployement-prod.yaml 
+  206  yamllint nginx.yaml 
+  207  vim nginx.yaml 
+  208  yamllint nginx.yaml 
+  209  vim nginx.yaml 
+  210  yamllint nginx.yaml 
+  211  vim nginx.yaml 
+  212  yamllint nginx.yaml 
+  213  vim nginx.yaml 
+  214  yamllint nginx.yaml 
+  215  vim nginx.yaml 
+  216  yamllint nginx.yaml 
+  217  vim nginx.yaml 
+  218  yamllint nginx.yaml 
+  219  ls -l
+  220  yamllint nginx-deployement-prod.yaml 
+  221  vim nginx-deployement-prod.yaml 
+  222  yamllint nginx-deployement-prod.yaml 
+  223  vim nginx-deployement-prod.yaml 
+  224  yamllint nginx-deployement-prod.yaml 
+  225  vim nginx-deployement-prod.yaml 
+  226  yamllint nginx-deployement-prod.yaml 
+  227  kubectl create -f nginx-deployement-prod.yaml 
+  228  kubectl version
+  229  kubectl apiversion
+  230  kubectl api-version
+  231  api-version
+  232  kubectl api-version --help
+  233  kubectl api-versions
+  234  vim nginx-deployement-prod.yaml 
+  235  kubectl create -f nginx-deployement-prod.yaml 
+  236  kubectl rolling-update
+  237  kubectl rolling-update -h
+  238  vim nginx-deployement-prod.yaml 
+  239  kubectl create -f nginx-deployement-prod.yaml 
+  240  vim nginx-deployement-prod.yaml 
+  241  kubectl create -f nginx-deployement-prod.yaml 
+  242  kubectl create -f nginx-deployement-prod.yaml --validdate=false
+  243  kubectl create -f nginx-deployement-prod.yaml --validate=false
+  244  kubectl version
+  245  vim nginx-deployement-prod.yaml 
+  246  kubectl api-versions
+  247  vim nginx-deployement-prod.yaml 
+  248  kubectl create -f nginx-deployement-prod.yaml --validate=false
+  249  vim nginx-deployement-prod.yaml 
+  250  kubectl create -f nginx-deployement-prod.yaml
+  251  kubectl scale rc hello-world --replica=4
+  252  kubectl scale rc hello-world --replisca=4
+  253  kubectl scale rc hello-world --replicas=4
+  254  kubectl get pods
+  255  kubectl create -f nginx-deployement-prod.yaml 
+  256  hack/update-all.sh
+  257  kubernetes -version
+  258  kubernete v
+  259  kubernates version
+  260  kubectl -v
+  261  kubectl --version
+  262  vim nginx-deployement-prod.yaml 
+  263  kubectl create -f nginx-deployement-prod.yaml 
+  264  vim nginx-deployement-prod.yaml 
+  265  kubectl create -f nginx-deployement-prod.yaml 
+  266  kubectl --version
+  267  minikube start --kubernetes-version v1.6.0
+  268  minikube start --kubernetes-version v1.5.2
+  269  kubectl cluster-info
+  270  kubectl version
+  271  vim nginx-deployement-prod.yaml 
+  272  kubectl create -f nginx-deployement-prod.yaml 
+  273  vim nginx-deployement-prod.yaml 
+  274  kubectl create -f nginx-deployement-prod.yaml 
+  275  kubectl get nodes
+  276  kubectl get pods
+  277  vim nginx-deployement-prod.yaml 
+  278  kubectl get deployements
+  279  kubectl get deployments
+  280  cp nginx-deployement-prod.yaml nginx-deployement-dev.yaml 
+  281  vim nginx-deployement-dev.yaml 
+  282  kubectl create -f nginx-deployement-dev.yaml 
+  283  kubectl get deployments
+  284  kubectl describe deployments -l app=nginx-deployment-dev
+  285  df -h
+  286  cp nginx-deployement-dev.yaml nginx-deployement-dev-update.yaml
+  287  vim nginx-deployement-dev-update.yaml 
+  288  kubectl apply -f nginx-deployement-dev-update.yaml 
+  289  kubectl get pods
+  290  kubectl describe deployments nginx-deployement-dev
+  291  kubectl describe deployments -l app=nginx-deployments-dev
+  292  kubectl describe deployments -l app=nginx-deployment-dev
+  293  history 
+  294  kubectl get deployements
+  295  kubectl get deployement
+  296  kubectl get deployment
+  297  vim nginx-deployement-prod.yaml 
+  298  vim nginx-deployement-dev.yaml 
+  299  vim nginx-deployement-dev-update.yaml
+  300  kubectl get deployment
+  301  kubectl describe deployments -l app=nginx-deployment-dev
+  302  vim nginx-muti-label.yaml
+  303  yamllint nginx-muti-label.yaml 
+  304  vim nginx-muti-label.yaml
+  305  yamllint nginx-muti-label.yaml 
+  306  vim nginx-muti-label.yaml
+  307  yamllint nginx-muti-label.yaml 
+  308  vim nginx-muti-label.yaml
+  309  yamllint nginx-muti-label.yaml 
+  310  vim nginx-muti-label.yaml
+  311  yamllint nginx-muti-label.yaml 
+  312  vim nginx-muti-label.yaml
+  313  yamllint nginx-muti-label.yaml 
+  314  kubectl get nodes
+  315  kubectl get pods
+  316  kubectl create -f nginx-muti-label.yaml 
+  317  vim nginx-muti-label.yaml
+  318  kubectl create -f nginx-muti-label.yaml 
+  319  vim nginx-muti-label.yaml
+  320  kubectl create -f nginx-muti-label.yaml 
+  321  vim nginx-muti-label.yaml
+  322  kubectl create -f nginx-muti-label.yaml 
+  323  vim nginx-muti-label.yaml
+  324  kubectl create -f nginx-muti-label.yaml 
+  325  kubectl get pods
+  326  vim nginx-muti-label.yaml
+  327  kubectl get pods
+  328  kubectl create -f nginx-muti-label.yaml 
+  329  kubectl get pods
+  330  kubectl delete nginx-www
+  331  kubectl get pods
+  332  kubectl delete pods nginx
+  333  kubectl delete pods nginx2
+  334  kubectl delete pods nginx-deployement-dev-2798700780-4cgn6 
+  335  kubectl delete pods nginx-deployement-dev-2798700780-6z3xp
+  336  kubectl delete pods nginx-deployement-prod-1487587902-bhtd5
+  337  kubectl delete pods nginx-deployement-prod-1487587902-zn15d
+  338  kubectl delete pods nginx-www-2hf41
+  339  kubectl delete pods nginx-www-ccdjm 
+  340  kubectl get pods
+  341  kubectl delete pods  nginx-deployement-dev-2798700780-l5qxf
+  342  kubectl delete pods 
+  343  kubectl delete pods nginx-deployement-dev-2798700780-v67kp
+  344  kubectl get pods
+  345  kubectl delete pods nginx-deployement-dev-2798700780-96m9b
+  346  kubectl get pods
+  347  kubectl get services
+  348  history his003
+  349  history > his003
+

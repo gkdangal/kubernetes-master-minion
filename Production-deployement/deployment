@@ -1,0 +1,121 @@
+[root@gkdangal2 Build]# cp nginx-pod-label.yaml nginx-deployement-prod.yaml
+[root@gkdangal2 Build]# vim nginx-deployement-prod.yaml
+apiVersion: extensions/v1beta1
+kind: Deployement
+metadata:
+  name: nginx-deployement-prod
+spec:
+  replicas: 2
+  template:
+    metedata:
+      labels:
+        app: nginx-deployment-prod
+
+    spec:
+      containers:
+      - name: nginx-deployement-prod
+        image: nginx:1.7.9
+        ports:
+        - containerPort: 80
+
+[root@gkdangal2 Build]# 
+[root@gkdangal2 Build]# kubectl get deployment
+NAME                     DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+nginx-deployement-dev    2         2         2            2           20m
+nginx-deployement-prod   2         2         2            2           29m
+[root@gkdangal2 Build]# vim nginx-deployement-prod.yaml 
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+ name: nginx-deployement-prod
+spec:
+ replicas: 2
+ template:
+  metadata:
+   labels:
+    app: nginx-deployment-prod
+  spec:
+   containers:
+    - name: nginx-deployement-prod
+      image: nginx:1.7.9
+      ports:
+       - containerPort: 80
+====================================
+[root@gkdangal2 Build]# kubectl create -f nginx-deployement-prod.yaml 
+[root@gkdangal2 Build]# cp nginx-deployement-prod.yaml nginx-deployement-dev.yaml 
+[root@gkdangal2 Build]# vim nginx-deployement-dev.yaml
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+ name: nginx-deployement-dev
+spec:
+ replicas: 2
+ template:
+  metadata:
+   labels:
+    app: nginx-deployment-dev
+  spec:
+   containers:
+    - name: nginx-deployement-dev
+      image: nginx:1.7.9
+      ports:
+       - containerPort: 80
+~ 
+[root@gkdangal2 Build]# kubectl create -f nginx-deployement-dev.yaml                          
+[root@gkdangal2 Build]# kubectl get deployment
+NAME                     DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+nginx-deployement-dev    2         2         2            2           20m
+nginx-deployement-prod   2         2         2            2           29m
+[root@gkdangal2 Build]# 
+=====================================
+Upgrading nginx 1.7.9 nginx-deployment-dev 
+[root@gkdangal2 Build]# cp nginx-deployement-dev.yaml nginx-deployement-dev-update.yaml
+[root@gkdangal2 Build]# vim nginx-deployement-dev-update.yaml
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+ name: nginx-deployement-dev
+spec:
+ replicas: 2
+ template:
+  metadata:
+   labels:
+    app: nginx-deployment-dev
+  spec:
+   containers:
+    - name: nginx-deployement-dev
+      image: nginx:1.8
+      ports:
+       - containerPort: 80
+-------------------------------
+[root@gkdangal2 Build]# kubectl apply -f nginx-deployement-dev-update.yaml
+deployment "nginx-deployement-dev" configured
+[root@gkdangal2 Build]# kubectl describe deployments -l app=nginx-deployment-dev
+Name:			nginx-deployement-dev
+Namespace:		default
+CreationTimestamp:	Mon, 15 Jan 2018 20:06:04 +0000
+Labels:			app=nginx-deployment-dev
+Selector:		app=nginx-deployment-dev
+Replicas:		2 updated | 2 total | 2 available | 0 unavailable
+StrategyType:		RollingUpdate
+MinReadySeconds:	0
+RollingUpdateStrategy:	1 max unavailable, 1 max surge
+Conditions:
+  Type		Status	Reason
+  ----		------	------
+  Available 	True	MinimumReplicasAvailable
++++++++++++++++++++
+At minimos------
+[root@gkdangal3 ~]# docker ps
+CONTAINER ID        IMAGE                                      COMMAND                  CREATED             STATUS              PORTS               NAMES
+9364df23518c        nginx:1.8                                  "nginx -g 'daemon off"   2 minutes ago       Up 2 minutes                            k8s_nginx-deployement-dev.c3106c8_nginx-deployement-dev-2798700780-6z3xp_default_4e6c59a1-fa31-11e7-9f50-0a8fbf887cc6_cba3b3f6
+baa8d7b472a6        gcr.io/google_containers/pause-amd64:3.0   "/pause"                 2 minutes ago       Up 2 minutes 
+==========================================
+
+
+
+
+

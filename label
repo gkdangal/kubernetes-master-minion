@@ -1,0 +1,53 @@
+here we add lebel to identified large number of pods
+
+[root@gkdangal2 Build]# vim nginx2-pod-label.yaml 
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx2
+  labels:
+    app: nginx2
+spec:
+  containers:
+  - name: nginx2
+    image: nginx:1.7.9
+    ports:
+    - containerPort: 80
+
+[root@gkdangal2 Build]# vim nginx-pod-label.yaml 
+piVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+  labels:
+    app: nginx
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.7.9
+    ports:
+    - containerPort: 80
+[root@gkdangal2 Build]# kubectl create -f  nginx-pod-label.yaml
+
+[root@gkdangal2 Build]# kubectl create -f  nginx2-pod-label.yaml
+ => from above command we will get two pod
+=========================================
+How to select pods by lebale
+[root@gkdangal2 Build]# kubectl get pods -l app=nginx
+[root@gkdangal2 Build]# kubectl get pods -l app=nginx2
+[root@gkdangal2 Build]# kubectl get pods => it display all pods available on kubernates cluster
+ 
+To get all information specific labaled pods is
+
+[root@gkdangal2 Build]# kubectl describe pod -l app=nginx2
+
+
+
+
+
+
+
+
+
+
