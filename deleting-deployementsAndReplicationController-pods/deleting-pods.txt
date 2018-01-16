@@ -1,0 +1,75 @@
+## creating yaml files
+[root@gkdangal2 Build]# vim nginx-deployement-prod.yaml
+
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+ name: nginx-deployement-prod
+spec:
+ replicas: 2
+ template:
+  metadata:
+   labels:
+    app: nginx-deployment-prod
+  spec:
+   containers:
+    - name: nginx-deployement-prod
+      image: nginx:1.7.9
+      ports:
+       - containerPort: 80
+==========================================
+Deploy
+[root@gkdangal2 Build]# kubectl create -f nginx-deployement-prod.yaml 
+deployment "nginx-deployement-prod" created
+[root@gkdangal2 Build]#
+##############viewing#################
+[root@gkdangal2 Build]# kubectl get pods
+NAME                                      READY     STATUS    RESTARTS   AGE
+nginx-deployement-dev-2798700780-wth1j    1/1       Running   3          16h
+nginx-deployement-dev-2798700780-xt83c    1/1       Running   2          42m
+nginx-deployement-prod-1487587902-03370   1/1       Running   0          46s
+nginx-deployement-prod-1487587902-2n069   1/1       Running   0          46s
+nginx-www-49x45                           1/1       Running   3          16h
+nginx-www-685b9                           1/1       Running   2          16h
+nginx-www-dtcj8                           1/1       Running   3          16h
+[root@gkdangal2 Build]#
+#############delete###############
+[root@gkdangal2 Build]# kubectl delete deployment nginx-deployement-prod
+deployment "nginx-deployement-prod" deleted
+[root@gkdangal2 Build]# 
+##############Here is second Example#############################
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+ name: nginx-deployement-dev
+spec:
+ replicas: 2
+ template:
+  metadata:
+   labels:
+    app: nginx-deployment-dev
+  spec:
+   containers:
+    - name: nginx-deployement-dev
+      image: nginx:1.7.9
+      ports:
+       - containerPort: 80
+
+################delete-dev####################
+[root@gkdangal2 Build]# kubectl delete deployment nginx-deployement-dev
+deployment "nginx-deployement-dev" deleted
+[root@gkdangal2 Build]# 
+===========================================
+After deleting 4 deployment pods
+
+[root@gkdangal2 Build]# kubectl get pods
+NAME              READY     STATUS    RESTARTS   AGE
+nginx-www-49x45   1/1       Running   3          16h
+nginx-www-685b9   1/1       Running   2          16h
+nginx-www-dtcj8   1/1       Running   3          16h
+[root@gkdangal2 Build]# 
+++++++++++++++++++++++++++++++++++++++++++++++
+
+

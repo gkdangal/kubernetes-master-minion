@@ -1,0 +1,100 @@
+Creating service for replication controller pods
+############# Creating yaml files #############
+[root@gkdangal2 Build]# vim nginx-muti-label.yaml
+---
+apiVersion: v1
+kind: ReplicationController
+metadata:
+ name: nginx-www
+spec:
+ replicas: 3
+ selector:
+  app: nginx
+ template:
+  metadata:
+   name: nginx
+   labels:
+    app: nginx
+  spec:
+   containers:
+    - name: nginx
+      image: nginx
+      ports:
+       - containerPort: 80
+----------------------------------
+## creating pods ####
+[root@gkdangal2 Build]# kubectl create -f nginx-muti-label.yaml 
+replicationcontroller "nginx-www" created
+[root@gkdangal2 Build]# kubectl get pods
+NAME              READY     STATUS    RESTARTS   AGE
+nginx-www-2pkfx   1/1       Running   0          9s
+nginx-www-3bljk   1/1       Running   0          9s
+nginx-www-jjptx   1/1       Running   0          9s
+[root@gkdangal2 Build]#
+===================================
+################# creating service for above pod #########################
+[root@gkdangal2 Build]# vim nginx-service.yaml
+---
+apiVersion: v1
+kind: Service
+metadata:
+ name: nginx-service
+spec:
+ ports:
+  - port: 8000
+    targetPort: 80
+    protocol: TCP
+ selector:
+  app: nginx
+
+[root@gkdangal2 Build]# kubectl create -f nginx-service.yaml
+[root@gkdangal2 Build]# kubectl run busybox --image=busybox --restart=never --tty --garenator -i
+[root@gkdangal2 Build]# kubectl get services
+[root@gkdangal2 Build]#[root@gkdangal2 Build]# kubectl delete pod busybox
+
+[root@gkdangal2 Build]# kubectl describe service nginx-serviceName:			
+nginx-service
+Namespace:		default
+Labels:			<none>
+Selector:		app=nginx
+Type:			ClusterIP
+IP:			10.254.69.167
+Port:			<unset>	8000/TCP
+Endpoints:		172.17.0.2:80,172.17.0.2:80,172.17.0.3:80
+Session Affinity:	None
+No events.
+[root@gkdangal2 Build]# 
+=========== Delete Service =====================
+[root@gkdangal2 Build]# kubectl delete service nginx-service
+service "nginx-service" deleted
+[root@gkdangal2 Build]#
+###################### Again Creating and Deleting ##########################
+[root@gkdangal2 Build]# kubectl create -f nginx-service.yaml 
+service "nginx-service" created
+[root@gkdangal2 Build]# kubectl describe service nginx-service
+Name:			nginx-service
+Namespace:		default
+Labels:			<none>
+Selector:		app=nginx
+Type:			ClusterIP
+IP:			10.254.115.201
+Port:			<unset>	8000/TCP
+Endpoints:		172.17.0.2:80,172.17.0.2:80,172.17.0.3:80
+Session Affinity:	None
+No events.
+[root@gkdangal2 Build]# 
+-------------------------------
+[root@gkdangal2 Build]# kubectl get pods
+NAME              READY     STATUS    RESTARTS   AGE
+nginx-www-3bljk   1/1       Running   1          2h
+nginx-www-jjptx   1/1       Running   1          2h
+nginx-www-ptbvv   1/1       Running   0          1h
+[root@gkdangal2 Build]# kubectl get services
+NAME            CLUSTER-IP       EXTERNAL-IP   PORT(S)    AGE
+kubernetes      10.254.0.1       <none>        443/TCP    6d
+nginx-service   10.254.115.201   <none>        8000/TCP   1m
+[root@gkdangal2 Build]# 
+
+
+
+

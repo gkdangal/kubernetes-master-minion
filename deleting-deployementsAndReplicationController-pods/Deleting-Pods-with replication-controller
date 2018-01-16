@@ -1,0 +1,61 @@
+############# Creating yaml files #############
+[root@gkdangal2 Build]# vim nginx-muti-label.yaml
+---
+apiVersion: v1
+kind: ReplicationController
+metadata:
+ name: nginx-www
+spec:
+ replicas: 3
+ selector:
+  app: nginx
+ template:
+  metadata:
+   name: nginx
+   labels:
+    app: nginx
+  spec:
+   containers:
+    - name: nginx
+      image: nginx
+      ports:
+       - containerPort: 80
+----------------------------------
+## delete ##
+[root@gkdangal2 Build]# kubectl delete replicationcontrollers nginx-www
+replicationcontroller "nginx-www" deleted
+[root@gkdangal2 Build]# 
+## creating pods ####
+[root@gkdangal2 Build]# kubectl create -f nginx-muti-label.yaml 
+replicationcontroller "nginx-www" created
+[root@gkdangal2 Build]# kubectl get pods
+NAME              READY     STATUS    RESTARTS   AGE
+nginx-www-2pkfx   1/1       Running   0          9s
+nginx-www-3bljk   1/1       Running   0          9s
+nginx-www-jjptx   1/1       Running   0          9s
+[root@gkdangal2 Build]# 
+##########################################
+if you delete one pod kubernetes automatically create another one because kubernetes 
+reads on defination defines state of job and make sure it make meets defination state
+So it automatically cretae another one
+----------------------before delete----------------
+[root@gkdangal2 Build]# kubectl get pods
+NAME              READY     STATUS    RESTARTS   AGE
+nginx-www-2pkfx   1/1       Running   0          9s
+nginx-www-3bljk   1/1       Running   0          9s
+nginx-www-jjptx   1/1       Running   0          9s
+[root@gkdangal2 Build]# 
+--- if we delete first pods kubernetes automatically create new one ----
+[root@gkdangal2 Build]# kubectl delete pod nginx-www-2pkfx
+pod "nginx-www-2pkfx" deleted
+[root@gkdangal2 Build]# kubectl get pods
+NAME              READY     STATUS    RESTARTS   AGE
+nginx-www-3bljk   1/1       Running   0          4m
+nginx-www-dm7xm   1/1       Running   0          3s
+nginx-www-jjptx   1/1       Running   0          4m
+[root@gkdangal2 Build]# 
+here i delete this Pod "nginx-www-2pkfx" now i can see new pod with different name.
+=========== to delete all pods ===========================
+[root@gkdangal2 Build]# kubectl create -f nginx-muti-label.yaml 
+replicationcontroller "nginx-www" created
+
