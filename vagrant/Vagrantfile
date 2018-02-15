@@ -1,0 +1,92 @@
+# Defines our Vagrant environment
+#
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+
+  # create mgmt node
+#  config.vm.define :mgmt do |mgmt_config|
+#      mgmt_config.vm.box = "centos/7"
+#      mgmt_config.vm.hostname = "mgmt"
+#      mgmt_config.vm.network :private_network, ip: "10.0.15.10"
+#      mgmt_config.vm.provider "virtualbox" do |vb|
+#        vb.memory = "256"
+#      end
+#      mgmt_config.vm.provision :shell, path: "bootstrap-mgmt.sh"
+#  end
+
+  # create load balancer
+#  config.vm.define :lb do |lb_config|
+#      lb_config.vm.box = "centos/7"
+#      lb_config.vm.hostname = "lb"
+#      lb_config.vm.network :private_network, ip: "10.0.15.11"
+#      lb_config.vm.network "forwarded_port", guest: 80, host: 8080
+#      lb_config.vm.provider "virtualbox" do |vb|
+#        vb.memory = "256"
+#      end
+#  end
+#------------------
+# config.vm.define :ldap do |ldap_config|
+#      lb_config.vm.box = "centos/7"
+#      lb_config.vm.hostname = "ldap.example.com"
+#      lb_config.vm.network :private_network, ip: "10.0.15.50"
+#      lb_config.vm.network "forwarded_port", guest: 80, host: 8050
+#      lb_config.vm.provider "virtualbox" do |vb|
+#        vb.memory = "512"
+#      end
+#  end
+#------------------
+
+  # create some web servers
+  # https://docs.vagrantup.com/v2/vagrantfile/tips.html
+  (1..6).each do |i|
+    config.vm.define "test#{i}" do |node|
+        node.vm.box = "centos/7"
+        node.vm.hostname = "test#{i}"
+        node.vm.network :private_network, ip: "10.0.15.4#{i}"
+        node.vm.network "forwarded_port", guest: 80, host: "808#{i}"
+        node.vm.provider "virtualbox" do |vb|
+          vb.memory = "512"
+        end
+    end
+  end
+#################Kubernates testing Environment##################
+
+  (1..6).each do |i|
+    config.vm.define "kube#{i}" do |node|
+        node.vm.box = "centos/7"
+        node.vm.hostname = "kube#{i}"
+        node.vm.network :private_network, ip: "10.0.15.6#{i}"
+        node.vm.network "forwarded_port", guest: 80, host: "806#{i}"
+        node.vm.provider "virtualbox" do |vb|
+          vb.memory = "512"
+        end
+    end
+  end
+#################3ubuntu web host ##################
+######################################
+ #  config.vm.define :lbubuntu do |lb_config|
+ #     lb_config.vm.box = "ubuntu/trusty64"
+ #     lb_config.vm.hostname = "lbubuntu"
+ #     lb_config.vm.network :private_network, ip: "10.0.15.39"
+ #     lb_config.vm.network "forwarded_port", guest: 80, host: 8090
+ #     lb_config.vm.provider "virtualbox" do |vb|
+ #       vb.memory = "256"
+ #     end
+ #  end
+  # https://docs.vagrantup.com/v2/vagrantfile/tips.html
+#  (1..2).each do |i|
+#    config.vm.define "webubuntu#{i}" do |node|
+#        node.vm.box = "ubuntu/trusty64"
+#        node.vm.hostname = "webubuntu#{i}"
+#        node.vm.network :private_network, ip: "10.0.15.4#{i}"
+#        node.vm.network "forwarded_port", guest: 80, host: "809#{i}"
+#        node.vm.provider "virtualbox" do |vb|
+#          vb.memory = "256"
+#        end
+#    end
+#  end
+#################3ubuntu web host ##################
+
+end

@@ -1,0 +1,144 @@
+creating deployment from command line
+
+[root@gkdangal2 Build]# kubectl run myapache --image=latest123/apache
+deployment "myapache" created
+[root@gkdangal2 Build]#
+-----------------------
+[root@gkdangal2 Build]# kubectl get pods
+NAME                       READY     STATUS             RESTARTS   AGE
+myapache-810196504-g7hsq   0/1       ImagePullBackOff   0          3m
+[root@gkdangal2 Build]# 
+---------------------------
+[root@gkdangal2 Build]# kubectl get deployment
+NAME       DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+myapache   1         1         1            0           4m
+[root@gkdangal2 Build]# 
+--------- At minins--------------------------
+[root@gkdangal5 ~]# docker ps
+CONTAINER ID        IMAGE                                      COMMAND             CREATED             STATUS              PORTS               NAMES
+ded3beee51bb        gcr.io/google_containers/pause-amd64:3.0   "/pause"            4 minutes ago       Up 4 minutes                            k8s_POD.d8dbe16c_myapache-810196504-g7hsq_default_6e2ec09f-fb01-11e7-a346-0a8fbf887cc6_970fcc5e
+[root@gkdangal5 ~]# 
+[root@gkdangal2 Build]# kubectl describe deployment
+Name:			myapache
+Namespace:		default
+CreationTimestamp:	Tue, 16 Jan 2018 21:08:42 +0000
+Labels:			run=myapache
+Selector:		run=myapache
+Replicas:		1 updated | 1 total | 0 available | 1 unavailable
+StrategyType:		RollingUpdate
+MinReadySeconds:	0
+RollingUpdateStrategy:	1 max unavailable, 1 max surge
+Conditions:
+  Type		Status	Reason
+=======================================
+[root@gkdangal2 Build]# kubectl describe pod myapache-810196504
+Name:		myapache-810196504-g7hsq
+Namespace:	default
+Node:		gkdangal5/172.31.25.230
+Start Time:	Tue, 16 Jan 2018 21:08:42 +0000
+Labels:		pod-template-hash=810196504
+		run=myapache
+Status:		Pending
+IP:		172.17.0.2
+Controllers:	ReplicaSet/myapache-810196504
+Containers:
+===========After deleteing deployments====================
+[root@gkdangal2 Build]# kubectl delete deployment myapache 
+deployment "myapache" deleted
+[root@gkdangal2 Build]# kubectl delete deployement
+error: resource(s) were provided, but no name, label selector, or --all flag specified
+[root@gkdangal2 Build]# 
+[root@gkdangal2 Build]# kubectl get deployment
+No resources found.
+[root@gkdangal2 Build]# kubectl get pods
+No resources found.
+[root@gkdangal2 Build]# 
+################################################
+Creating replica from command line
+
+[root@gkdangal2 Build]# kubectl run myreplica --image=latest123/apache --replicas=2 --labels=app=myapache,version=1.0
+deployment "myreplica" created
+[root@gkdangal2 Build]# kubectl describe deploymennt myreplica
+the server doesn't have a resource type "deploymennt"
+[root@gkdangal2 Build]# kubectl describe deployment myreplica
+Name:			myreplica
+Namespace:		default
+CreationTimestamp:	Tue, 16 Jan 2018 21:25:04 +0000
+Labels:			app=myapache
+			version=1.0
+Selector:		app=myapache,version=1.0
+Replicas:		2 updated | 2 total | 0 available | 2 unavailable
+StrategyType:		RollingUpdate
+MinReadySeconds:	0
+RollingUpdateStrategy:	1 max unavailable, 1 max surge
+Conditions:
+============================================================
+[root@gkdangal2 Build]# kubectl get deployments
+NAME        DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+myreplica   2         2         2            0           2m
+[root@gkdangal2 Build]# kubectl get pods
+NAME                        READY     STATUS             RESTARTS   AGE
+myreplica-775987825-1fkq5   0/1       ImagePullBackOff   0          2m
+myreplica-775987825-cjvnq   0/1       ImagePullBackOff   0          2m
+[root@gkdangal2 Build]#
+-------------------------------------
+[root@gkdangal2 Build]# kubectl describe deployment myreplica
+Name:			myreplica
+Namespace:		default
+CreationTimestamp:	Tue, 16 Jan 2018 21:25:04 +0000
+Labels:			app=myapache
+			version=1.0
+Selector:		app=myapache,version=1.0
+Replicas:		2 updated | 2 total | 0 available | 2 unavailable
+StrategyType:		RollingUpdate
+MinReadySeconds:	0
+RollingUpdateStrategy:	1 max unavailable, 1 max surge
+--------------------------------------------------
+ReplicaSet	Scaled up replica set myreplica-775987825 to 2
+[root@gkdangal2 Build]# 
+[root@gkdangal2 Build]# kubectl describe pods -l version=1.0
+Name:		myreplica-775987825-1fkq5
+Namespace:	default
+Node:		gkdangal5/172.31.25.230
+Start Time:	Tue, 16 Jan 2018 21:25:04 +0000
+Labels:		app=myapache
+		pod-template-hash=775987825
+		version=1.0
+Status:		Pending
+IP:		172.17.0.2
+Controllers:	ReplicaSet/myreplica-775987825
+Containers:
+------
+Name:		myreplica-775987825-cjvnq
+Namespace:	default
+Node:		gkdangal4/172.31.120.7
+Start Time:	Tue, 16 Jan 2018 21:25:04 +0000
+Labels:		app=myapache
+		pod-template-hash=775987825
+		version=1.0
+Status:		Pending
+IP:		172.17.0.2
+Controllers:	ReplicaSet/myreplica-775987825
+Containers:
+
+############ minions Two replicas are running on two minions 4 and 5#############
+[root@gkdangal5 ~]# docker ps
+CONTAINER ID        IMAGE                                      COMMAND             CREATED             STATUS              PORTS               NAMES
+864311f7ca1f        gcr.io/google_containers/pause-amd64:3.0   "/pause"            11 minutes ago      Up 11 minutes                           k8s_POD.d8dbe16c_myreplica-775987825-1fkq5_default_b7a22768-fb03-11e7-a346-0a8fbf887cc6_4d2d778a
+[root@gkdangal5 ~]#
+-----
+[root@gkdangal4 ~]# docker ps
+CONTAINER ID        IMAGE                                      COMMAND             CREATED             STATUS              PORTS               NAMES
+a9d07854460d        gcr.io/google_containers/pause-amd64:3.0   "/pause"            11 minutes ago      Up 11 minutes                           k8s_POD.d8dbe16c_myreplica-775987825-cjvnq_default_b7a24dcf-fb03-11e7-a346-0a8fbf887cc6_1cf8f1a9
+[root@gkdangal4 ~]# 
+===============
+[root@gkdangal2 Build]# kubectl delete deployment myreplica
+deployment "myreplica" deleted
+[root@gkdangal2 Build]# 
+
+
+
+
+
+
+

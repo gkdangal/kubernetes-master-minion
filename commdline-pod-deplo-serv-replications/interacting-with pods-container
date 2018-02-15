@@ -1,0 +1,28 @@
+============
+[root@gkdangal2 Build]# kubectl delete deployment myreplica
+deployment "myreplica" deleted
+[root@gkdangal2 Build]# 
+
+[root@gkdangal2 Build]# kubectl get deployments
+No resources found.
+[root@gkdangal2 Build]# vim myapache.yaml 
+[root@gkdangal2 Build]# kubectl create -f myapache.yaml 
+error: error validating "myapache.yaml": error validating data: found invalid field metedata for v1.Pod; if you choose to ignore these errors, turn validation off with --validate=false
+=== here is letter mistake so fixed it and and===# 
+==one thing keep in mind is you have to indent properly ====
+[root@gkdangal2 Build]# vim myapache.yaml
+---
+apiVersion: v1
+kind: Pod
+metadata:
+ name: myapache
+spec:
+ containers:
+  - name: myapache
+    image: latest123/apache
+    ports:
+     - containerPort: 80
+[root@gkdangal2 Build]# yamllint myapache.yaml
+[root@gkdangal2 Build]# kubectl create -f myapache.yaml 
+pod "myapache" created
+[root@gkdangal2 Build]# 
